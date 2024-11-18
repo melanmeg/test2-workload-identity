@@ -40,7 +40,9 @@ jobs:
 
       - name: Clear GCP Auth
         run: |
-          gcloud auth revoke --all --quiet
+          if gcloud auth list --format="value(account)" | grep -q .; then
+            gcloud auth revoke --all --quiet
+          fi
           rm -rf ~/.config/gcloud
           mkdir -p ~/.config/gcloud
 

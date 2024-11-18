@@ -1,0 +1,69 @@
+name: "release"
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions: {}
+
+env:
+  APP_ROOT: ./app
+  PROJECT_ID: test-project-373118
+  WORKLOAD_IDENTITY_PROVIDER: projects/593997455442/locations/global/workloadIdentityPools/my-github-pool6/providers/my-github-pool-provider6
+  SERVICE_ACCOUNT_EMAIL: my-github-sa@$test-project-373118.iam.gserviceaccount.com
+  REGISTRY_IMAGE_PATH: asia-northeast1-docker.pkg.dev/test-project-373118/my-repository/sample-app
+
+jobs:
+  build:
+    name: Build Job
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY_IMAGE_PATH }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            # type=semver,pattern={{major}}.{{minor}}
+            type=sha
+
+      - name: Auth GCP
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+
+      - name: Auth docker
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
+
+      - name: Build & Push
+        uses: docker/build-push-action@v6
+        with:
+          file: ${{ env.APP_ROOT }}/Dockerfile
+          context: ${{ env.APP_ROOT }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: '>= 363.0.0'
+
+      - name: $ gcloud info
+        run: gcloud info
+
+      - name: $ gcloud auth list
+        run: |
+          gcloud auth list
+          gcloud config list

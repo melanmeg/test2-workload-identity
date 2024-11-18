@@ -43,6 +43,7 @@ jobs:
         with:
           project_id: ${{ env.PROJECT_ID }}
           workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account_email: ${{ env.SERVICE_ACCOUNT_EMAIL }}
 
       - name: Auth docker
         run: |

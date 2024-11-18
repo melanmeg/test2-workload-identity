@@ -54,15 +54,3 @@ jobs:
           context: ${{ env.APP_ROOT }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-
-      - uses: google-github-actions/setup-gcloud@v1
-        with:
-          version: '>= 363.0.0'
-
-      - name: $ gcloud info
-        run: gcloud info
-
-      - name: $ gcloud auth list
-        run: |
-          gcloud auth list
-          gcloud config list

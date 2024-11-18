@@ -43,7 +43,7 @@ jobs:
           if gcloud auth list --format="value(account)" | grep -q .; then
             gcloud auth revoke --all --quiet
           fi
-          cat ~/.config/gcloud
+          ls -l ~/.config/gcloud/
           rm -rf ~/.config/gcloud
           mkdir -p ~/.config/gcloud
 

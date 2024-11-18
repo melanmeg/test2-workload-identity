@@ -43,6 +43,7 @@ jobs:
           if gcloud auth list --format="value(account)" | grep -q .; then
             gcloud auth revoke --all --quiet
           fi
+          cat ~/.config/gcloud
           rm -rf ~/.config/gcloud
           mkdir -p ~/.config/gcloud
 
@@ -55,6 +56,7 @@ jobs:
 
       - name: Clear Docker Auth
         run: |
+          cat ~/.docker/config.json
           rm -f ~/.docker/config.json
 
       - name: Auth docker

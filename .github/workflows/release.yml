@@ -38,14 +38,14 @@ jobs:
             type=semver,pattern={{version}}
             type=sha
 
-      # - name: Clear GCP Auth
-      #   run: |
-      #     if gcloud auth list --format="value(account)" | grep -q .; then
-      #       gcloud auth revoke --all --quiet
-      #     fi
-      #     ls -l ~/.config/gcloud/
-      #     rm -rf ~/.config/gcloud
-      #     mkdir -p ~/.config/gcloud
+      - name: Clear GCP Auth
+        run: |
+          if gcloud auth list --format="value(account)" | grep -q .; then
+            gcloud auth revoke --all --quiet
+          fi
+          ls -l ~/.config/gcloud/
+          rm -rf ~/.config/gcloud
+          mkdir -p ~/.config/gcloud
 
       - name: Auth GCP
         uses: google-github-actions/auth@v2
@@ -54,10 +54,10 @@ jobs:
           workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ env.SERVICE_ACCOUNT_EMAIL }}
 
-      # - name: Clear Docker Auth
-      #   run: |
-      #     cat ~/.docker/config.json
-      #     rm -f ~/.docker/config.json
+      - name: Clear Docker Auth
+        run: |
+          cat ~/.docker/config.json
+          rm -f ~/.docker/config.json
 
       - name: Auth docker
         run: |

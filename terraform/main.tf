@@ -42,3 +42,9 @@ resource "google_iam_workload_identity_pool_provider" "github_pool_provider" {
     issuer_uri = "https://token.actions.githubusercontent.com"
   }
 }
+
+resource "google_artifact_registry_repository" "repository" {
+  location      = local.region
+  repository_id = "my-repository"
+  format        = "DOCKER"
+}

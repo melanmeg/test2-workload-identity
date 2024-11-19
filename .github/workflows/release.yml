@@ -9,6 +9,7 @@ on:
 env:
   APP_ROOT: ./app
   PROJECT_ID: test-project-373118
+  PROJECT_NUMBER: 593997455442
   REGION: asia-northeast1
   WORKLOAD_IDENTITY_POOL: my-github-pool7
   WORKLOAD_IDENTITY_POOL_PROVIDER: my-github-pool-provider7
@@ -41,7 +42,7 @@ jobs:
       - uses: google-github-actions/auth@v2
         with:
           project_id: ${{ env.PROJECT_ID }}
-          workload_identity_provider: projects/593997455442/locations/global/workloadIdentityPools/${{ env.WORKLOAD_IDENTITY_POOL }}/providers/$${{ env.WORKLOAD_IDENTITY_POOL_PROVIDER }}
+          workload_identity_provider: projects/${{ env.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ env.WORKLOAD_IDENTITY_POOL }}/providers/$${{ env.WORKLOAD_IDENTITY_POOL_PROVIDER }}
 
       - name: Auth docker
         run: |

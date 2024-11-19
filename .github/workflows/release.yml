@@ -6,14 +6,14 @@ on:
     tags:
       - 'v*'
 
-permissions: {}
-
 env:
   APP_ROOT: ./app
   PROJECT_ID: test-project-373118
-  WORKLOAD_IDENTITY_PROVIDER: projects/593997455442/locations/global/workloadIdentityPools/my-github-pool7/providers/my-github-pool-provider7
-  SERVICE_ACCOUNT_EMAIL: my-github-sa@$test-project-373118.iam.gserviceaccount.com
-  REGISTRY_IMAGE_PATH: asia-northeast1-docker.pkg.dev/test-project-373118/my-repository/sample-app
+  REGION: asia-northeast1
+  WORKLOAD_IDENTITY_POOL: my-github-pool7
+  WORKLOAD_IDENTITY_POOL_PROVIDER: my-github-pool-provider7
+  REPOSITORY_NAME: my-repository
+  IMAGE_NAME: sample-app
 
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY_IMAGE_PATH }}
+          images: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}
           tags: |
             type=schedule
             type=ref,event=branch
@@ -38,14 +38,14 @@ jobs:
             type=semver,pattern={{version}}
             type=sha
 
-      - uses: 'google-github-actions/auth@v2'
+      - uses: google-github-actions/auth@v2
         with:
-          project_id: 'test-project-373118'
-          workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
+          project_id: ${{ env.PROJECT_ID }}
+          workload_identity_provider: projects/593997455442/locations/global/workloadIdentityPools/${{ env.WORKLOAD_IDENTITY_POOL }}/providers/$${{ env.WORKLOAD_IDENTITY_POOL_PROVIDER }}
 
-      # - name: Auth docker
-      #   run: |
-      #     gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
+      - name: Auth docker
+        run: |
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
       - name: Build & Push
         uses: docker/build-push-action@v6

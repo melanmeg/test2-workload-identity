@@ -50,11 +50,14 @@ resource "google_artifact_registry_repository" "my_repo" {
 }
 
 resource "google_artifact_registry_repository_iam_member" "my_repo_editor" {
+  project    = local.project_id
   repository = google_artifact_registry_repository.my_repo.name
   location   = google_artifact_registry_repository.my_repo.location
   role       = "roles/artifactregistry.writer"
   member     = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github_pool.name}/attribute.repository/${local.github_repository}"
 }
+
+# ERROR: denied: Permission "artifactregistry.repositories.uploadArtifacts" denied on resource "projects/test-project-373118/locations/asia-northeast1/repositories/my-repository" (or it may not exist)
 
 # resource "google_service_account" "github_service_account" {
 #   project      = local.project_id

@@ -57,7 +57,7 @@ jobs:
       - uses: 'google-github-actions/auth@v2'
         with:
           project_id: 'test-project-373118'
-          workload_identity_provider: "projects/593997455442/locations/global/workloadIdentityPools/github/providers/my-repo"
+          workload_identity_provider: "${{ env.WORKLOAD_IDENTITY_PROVIDER }}"
 
 
       # - name: Clear Docker Auth

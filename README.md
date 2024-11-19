@@ -1,6 +1,4 @@
 # test2-workload-identity
 
-
-```bash
-
-```
+> 最小限の実装で、Github AcitionsとWorkload Identity連携
+> サービスアカウントなし

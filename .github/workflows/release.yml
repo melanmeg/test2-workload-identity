@@ -11,7 +11,7 @@ permissions: {}
 env:
   APP_ROOT: ./app
   PROJECT_ID: test-project-373118
-  WORKLOAD_IDENTITY_PROVIDER: projects/593997455442/locations/global/workloadIdentityPools/my-github-pool6/providers/my-github-pool-provider6
+  WORKLOAD_IDENTITY_PROVIDER: projects/593997455442/locations/global/workloadIdentityPools/my-github-pool7/providers/my-github-pool-provider7
   SERVICE_ACCOUNT_EMAIL: my-github-sa@$test-project-373118.iam.gserviceaccount.com
   REGISTRY_IMAGE_PATH: asia-northeast1-docker.pkg.dev/test-project-373118/my-repository/sample-app
 
